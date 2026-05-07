@@ -22,6 +22,14 @@ return [
         'key' => env('RESEND_API_KEY'),
     ],
 
+    'iqair' => [
+        'key' => env('IQAIR_API_KEY'),
+        'city' => env('IQAIR_CITY'),
+        'state' => env('IQAIR_STATE'),
+        'country' => env('IQAIR_COUNTRY'),
+        'base_url' => env('IQAIR_BASE_URL', 'https://api.airvisual.com/v2'),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),

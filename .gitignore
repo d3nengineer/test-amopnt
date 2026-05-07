@@ -30,3 +30,5 @@ Thumbs.db
 .codex
 CLAUDE.md
 AGENTS.md
+.ai-*
+boost.json

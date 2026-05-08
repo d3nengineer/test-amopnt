@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\IqairCity;
+use App\Enums\IqairCountry;
+use App\Enums\IqairState;
+use Database\Factories\IqairMeasurementFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
@@ -26,6 +31,9 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class IqairMeasurement extends Model
 {
+    /** @use HasFactory<IqairMeasurementFactory> */
+    use HasFactory;
+
     /**
      * Get the attributes that should be cast.
      *
@@ -34,6 +42,9 @@ class IqairMeasurement extends Model
     protected function casts(): array
     {
         return [
+            'city' => IqairCity::class,
+            'state' => IqairState::class,
+            'country' => IqairCountry::class,
             'latitude' => 'float',
             'longitude' => 'float',
             'pollution_ts' => 'datetime',

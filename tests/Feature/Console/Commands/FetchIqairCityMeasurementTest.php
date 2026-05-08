@@ -2,6 +2,9 @@
 
 namespace Tests\Feature\Console\Commands;
 
+use App\Enums\IqairCity;
+use App\Enums\IqairCountry;
+use App\Enums\IqairState;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -22,9 +25,9 @@ class FetchIqairCityMeasurementTest extends TestCase
         $this->artisan('iqair:fetch-city')->assertSuccessful();
 
         $this->assertDatabaseHas('iqair_measurements', [
-            'city' => 'Yekaterinburg',
-            'state' => 'Sverdlovsk',
-            'country' => 'Russia',
+            'city' => IqairCity::Yekaterinburg->value,
+            'state' => IqairState::Sverdlovsk->value,
+            'country' => IqairCountry::Russia->value,
             'aqius' => 42,
             'mainus' => 'p2',
             'aqicn' => 21,
@@ -58,9 +61,9 @@ class FetchIqairCityMeasurementTest extends TestCase
     {
         config([
             'services.iqair.key' => '',
-            'services.iqair.city' => 'Yekaterinburg',
-            'services.iqair.state' => 'Sverdlovsk',
-            'services.iqair.country' => 'Russia',
+            'services.iqair.city' => IqairCity::Yekaterinburg->value,
+            'services.iqair.state' => IqairState::Sverdlovsk->value,
+            'services.iqair.country' => IqairCountry::Russia->value,
         ]);
 
         Http::preventStrayRequests();
@@ -122,9 +125,9 @@ class FetchIqairCityMeasurementTest extends TestCase
     {
         config([
             'services.iqair.key' => 'test-key',
-            'services.iqair.city' => 'Yekaterinburg',
-            'services.iqair.state' => 'Sverdlovsk',
-            'services.iqair.country' => 'Russia',
+            'services.iqair.city' => IqairCity::Yekaterinburg->value,
+            'services.iqair.state' => IqairState::Sverdlovsk->value,
+            'services.iqair.country' => IqairCountry::Russia->value,
             'services.iqair.base_url' => 'https://api.airvisual.com/v2',
         ]);
     }
@@ -137,9 +140,9 @@ class FetchIqairCityMeasurementTest extends TestCase
         return [
             'status' => 'success',
             'data' => [
-                'city' => 'Yekaterinburg',
-                'state' => 'Sverdlovsk',
-                'country' => 'Russia',
+                'city' => IqairCity::Yekaterinburg->value,
+                'state' => IqairState::Sverdlovsk->value,
+                'country' => IqairCountry::Russia->value,
                 'location' => [
                     'type' => 'Point',
                     'coordinates' => [60.6122, 56.8519],

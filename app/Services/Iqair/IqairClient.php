@@ -2,6 +2,9 @@
 
 namespace App\Services\Iqair;
 
+use App\Enums\IqairCity;
+use App\Enums\IqairCountry;
+use App\Enums\IqairState;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Support\Arr;
@@ -16,9 +19,9 @@ class IqairClient
      * Fetch and normalize city measurements from IQAir.
      *
      * @return array{
-     *     city: string,
-     *     state: string,
-     *     country: string,
+     *     city: IqairCity,
+     *     state: IqairState,
+     *     country: IqairCountry,
      *     latitude: float|null,
      *     longitude: float|null,
      *     pollution_ts: CarbonImmutable|null,
@@ -35,7 +38,7 @@ class IqairClient
      *     weather_icon: string|null
      * }
      */
-    public function fetchCityMeasurement(string $city, string $state, string $country, string $apiKey): array
+    public function fetchCityMeasurement(IqairCity $city, IqairState $state, IqairCountry $country, string $apiKey): array
     {
         $response = $this->http
             ->baseUrl((string) config('services.iqair.base_url', 'https://api.airvisual.com/v2'))
@@ -43,9 +46,9 @@ class IqairClient
             ->timeout(10)
             ->retry([100, 250, 500])
             ->get('/city', [
-                'city' => $city,
-                'state' => $state,
-                'country' => $country,
+                'city' => $city->value,
+                'state' => $state->value,
+                'country' => $country->value,
                 'key' => $apiKey,
             ])
             ->throw()
@@ -68,9 +71,9 @@ class IqairClient
         $coordinates = Arr::get($data, 'location.coordinates', []);
 
         return [
-            'city' => (string) Arr::get($data, 'city', $city),
-            'state' => (string) Arr::get($data, 'state', $state),
-            'country' => (string) Arr::get($data, 'country', $country),
+            'city' => $city,
+            'state' => $state,
+            'country' => $country,
             'latitude' => $this->coordinate($coordinates, 1),
             'longitude' => $this->coordinate($coordinates, 0),
             'pollution_ts' => $this->timestamp(Arr::get($data, 'current.pollution.ts')),
